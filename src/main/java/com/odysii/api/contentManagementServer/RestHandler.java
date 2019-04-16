@@ -6,12 +6,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-
-
-
 public class RestHandler {
 
-    public static void PostGeneralContent(String url,String body){
+    public void PostGeneralContent(String url,String body){
         HttpClient httpClient = HttpClientBuilder.create().build(); //Use this instead
 
         try {
