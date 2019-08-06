@@ -1,0 +1,11 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="ImpulseEdge" parallel="false">
+    <parameter name="deviceName" value="Nexus_9_API_22"/>
+    <parameter name="platformVersion" value="5.1.1"/>
+    <test name="ChromeTest">
+        <classes>
+            <class name="com.odysii.ImpulseEdgeTest"/>
+        </classes>
+    </test>
+</suite>

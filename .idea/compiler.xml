@@ -9,5 +9,8 @@
         <module name="ImpulseEdge_Automation" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ImpulseEdge_Automation" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

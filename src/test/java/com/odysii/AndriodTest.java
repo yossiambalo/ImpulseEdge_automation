@@ -2,32 +2,23 @@ package com.odysii;
 
 import com.odysii.api.contentManagementServer.RestHandler;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.odysii.api.contentManagementServer.PostFile.uploadFileToServer;
 
-public class AndriodTest {
-    public AndroidDriver driver;
-    public WebDriverWait wait;
-    AppiumDriverLocalService appiumService;
-    String appiumServiceUrl;
-    private final String killEmulatorCmd = "adb -s emulator-5554 emu kill";
+public class AndriodTest extends TestBase{
 
-    @BeforeSuite
+    //@BeforeSuite
     public void beforeSuite(){
         String url = "http://odysii-lcl.gilbarco.com:8090/content-server/GeneralContent/1367";
         JSONObject resResource = uploadFileToServer("C:\\pb\\yossi\\app.jpg","http://odysii-lcl.gilbarco.com:8090/content-server/Storage");
@@ -47,28 +38,23 @@ public class AndriodTest {
 
     @BeforeClass
     public void setup () throws MalformedURLException {
-        String emulatorPath = "emulator -avd Nexus_5X_API_28_2";//"C:\\Users\\nir.sarusy\\AppData\\Local\\Android\\Sdk\\emulator\\emulator.exe";
-        runCmd(emulatorPath);
-        appiumService = AppiumDriverLocalService.buildDefaultService();
-        appiumService.start();
-        appiumServiceUrl = appiumService.getUrl().toString();
-        System.out.println("Appium Service Address : - "+ appiumServiceUrl);
         DesiredCapabilities caps = new DesiredCapabilities();
         //caps.setCapability("deviceName", "Lenovo TAB 10.1 API 24");
-        caps.setCapability("deviceName", "Nexus_5X_API_28_2");
+        caps.setCapability("deviceName", deviceName);
         caps.setCapability("uuid", "emulator-5554");
         caps.setCapability("platformName", "Android");
-        caps.setCapability("platformVersion", "9");
+        caps.setCapability("platformVersion", platformVersion);
         caps.setCapability("skipUnlock","false");
         caps.setCapability("appPackage", "com.android.calculator2");
         caps.setCapability("appActivity","com.android.calculator2.Calculator");
         caps.setCapability("noReset","false");
         driver = new AndroidDriver(new URL(appiumServiceUrl), caps);
         wait = new WebDriverWait(driver, 10);
+        //driver.rotate(ScreenOrientation.PORTRAIT);
     }
 
     @Test
-    public void _01_TestSuccess() {
+    public void _01_testSuccess() {
         System.out.println("Calculate sum of two numbers - Example of successful test");
         wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id("com.android.calculator2:id/pad_numeric"))).isDisplayed();
@@ -80,15 +66,12 @@ public class AndriodTest {
         System.out.println(actualResults);
         String expectedResult = "4";
         Assert.assertEquals(actualResults,expectedResult);
-
-
     }
 
     @Test
-    public void _02_TestFail() {
+    public void _02_testFail() {
         System.out.println("Calculate multiple of two numbers - Example of failing test");
-        wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.id("com.android.calculator2:id/pad_numeric"))).isDisplayed();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.android.calculator2:id/pad_numeric"))).isDisplayed();
         driver.findElement(By.id("com.android.calculator2:id/digit_2")).click();
         driver.findElement(By.id("com.android.calculator2:id/op_mul")).click();
         driver.findElement(By.id("com.android.calculator2:id/digit_8")).click();
@@ -97,21 +80,5 @@ public class AndriodTest {
         System.out.println(actualResults);
         String expectedResult = "17";
         Assert.assertEquals(actualResults,expectedResult);
-
-
-    }
-    @AfterClass
-    public void teardown(){
-        driver.quit();
-        appiumService.stop();
-        runCmd(killEmulatorCmd);
-    }
-
-    private void runCmd(String command){
-        try {
-            Runtime.getRuntime().exec("cmd.exe /c "+command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
