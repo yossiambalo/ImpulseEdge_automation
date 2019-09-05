@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="ImpulseEdge" parallel="false">
     <parameter name="deviceName" value="Nexus_9_API_22"/>
-    <parameter name="platformVersion" value="5.1.1"/>
-    <test name="ChromeTest">
+    <parameter name="platformVersion" value="9"/>
+    <test name="Nexus_9_API_22_Test">
         <classes>
             <class name="com.odysii.ImpulseEdgeTest"/>
         </classes>
